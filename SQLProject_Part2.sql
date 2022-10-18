@@ -54,6 +54,37 @@ and p.Team =''
 and g.Geo in ('New Zeland','India')
 order by saledate;
 
-#utiliser group by 
+#utiliser group by  like a pivot table in excel
+SELECT geoid,sum(amount)
+from sales
+group by geoid;
+
+SELECT geoid,sum(amount) ,avg(amount),sum(boxes) 
+from sales
+group by geoid;
+	#group by along with join
+SELECT g.geo,sum(amount) ,avg(amount),sum(boxes) 
+from sales s
+join geo g on s.GeoID=g.GeoID
+group by g.geo;
+	#group by along with multiple join
+select pr.category,p.team,sum(boxes),sum(amount)
+from sales s
+join people p on p.spid=s.spid
+join products pr on pr.pid=s.pid
+where p.team<>''
+group by pr.category,p.team
+order by pr.Category,p.team;
+
+#total amount by product then show top 10 products
+select pr.product,sum(s.amount) as 'Total amount'
+from sales s
+join products pr on pr.pid=s.pid
+group by pr.Product
+order by 'Total amount' desc
+limit 10;
+
+
+
 
 
